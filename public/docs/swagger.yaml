@@ -1,0 +1,532 @@
+swagger: '2.0'
+info:
+  description: Документация для API заметок пользователя.
+  version: 1.0.0
+  title: Notes API
+host: localhost:8000
+basePath: /api
+schemes:
+  - http
+  - https
+paths:
+  /notes:
+    get:
+      tags:
+        - user
+      summary: Получить список заметок
+      description: Возвращает список всех заметок текущего пользователя.
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Успешный ответ
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      example: 3
+                    user_id:
+                      type: integer
+                      example: 2
+                    title:
+                      type: string
+                      example: "Пример заметки"
+                    content:
+                      type: string
+                      example: "Содержимое примерной заметки"
+        401:
+          description: Unauthorized
+    post:
+      tags:
+        - user
+      summary: Создать новую заметку
+      description: Создает новую заметку для текущего пользователя.
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: Данные для создания заметки
+          required: true
+          schema:
+            type: object
+            properties:
+              title:
+                type: string
+                example: "Новая заметка"
+              content:
+                type: string
+                example: "Содержимое новой заметки"
+      responses:
+        201:
+          description: Заметка создана
+          schema:
+            type: object
+            properties:
+              data:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    example: 3
+                  user_id:
+                    type: integer
+                    example: 2
+                  title:
+                    type: string
+                    example: "Новая заметка"
+                  content:
+                    type: string
+                    example: "Содержимое новой заметки"
+        400:
+          description: Неверный запрос
+        401:
+          description: Unauthorized
+  /notes/{id}:
+    get:
+      tags:
+        - user
+      summary: Получить заметку по ID
+      description: Возвращает заметку текущего пользователя по ID.
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          description: ID заметки
+          required: true
+          type: string
+      responses:
+        200:
+          description: Успешный ответ
+          schema:
+            type: object
+            properties:
+              data:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    example: 3
+                  user_id:
+                    type: integer
+                    example: 2
+                  title:
+                    type: string
+                    example: "Пример заметки"
+                  content:
+                    type: string
+                    example: "Содержимое примерной заметки"
+        401:
+          description: Unauthorized
+        404:
+          description: Заметка не найдена
+    put:
+      tags:
+        - user
+      summary: Обновить заметку
+      description: Обновляет существующую заметку текущего пользователя по ID.
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          description: ID заметки
+          required: true
+          type: string
+        - in: body
+          name: body
+          description: Данные для обновления заметки
+          required: true
+          schema:
+            type: object
+            properties:
+              title:
+                type: string
+                example: "Обновленный заголовок заметки"
+              content:
+                type: string
+                example: "Обновленное содержимое заметки"
+      responses:
+        200:
+          description: Успешный ответ
+          schema:
+            type: object
+            properties:
+              data:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    example: 3
+                  user_id:
+                    type: integer
+                    example: 2
+                  title:
+                    type: string
+                    example: "Обновленный заголовок заметки"
+                  content:
+                    type: string
+                    example: "Обновленное содержимое заметки"
+        400:
+          description: Неверный запрос
+        401:
+          description: Unauthorized
+        404:
+          description: Заметка не найдена
+    delete:
+      tags:
+        - user
+      summary: Удалить заметку
+      description: Удаляет заметку текущего пользователя по ID.
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          description: ID заметки
+          required: true
+          type: string
+      responses:
+        200:
+          description: Заметка удалена
+          schema:
+            type: object
+            properties:
+              data:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    example: 3
+                  user_id:
+                    type: integer
+                    example: 2
+                  title:
+                    type: string
+                    example: "Пример заметки"
+                  content:
+                    type: string
+                    example: "Содержимое примерной заметки"
+        401:
+          description: Unauthorized
+        404:
+          description: Заметка не найдена
+  /admin/notes:
+    get:
+      tags:
+        - admin
+      summary: Получить список всех заметок
+      description: Возвращает список всех заметок.
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Успешный ответ
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      example: 3
+                    user_id:
+                      type: integer
+                      example: 2
+                    title:
+                      type: string
+                      example: "Пример заметки"
+                    content:
+                      type: string
+                      example: "Содержимое примерной заметки"
+        401:
+          description: Unauthorized
+    post:
+      tags:
+        - admin
+      summary: Создать новую заметку
+      description: Создает новую заметку.
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: Данные для создания заметки
+          required: true
+          schema:
+            type: object
+            properties:
+              title:
+                type: string
+                example: "Новая заметка"
+              content:
+                type: string
+                example: "Содержимое новой заметки"
+      responses:
+        201:
+          description: Заметка создана
+          schema:
+            type: object
+            properties:
+              data:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    example: 3
+                  user_id:
+                    type: integer
+                    example: 2
+                  title:
+                    type: string
+                    example: "Новая заметка"
+                  content:
+                    type: string
+                    example: "Содержимое новой заметки"
+        400:
+          description: Неверный запрос
+        401:
+          description: Unauthorized
+  /admin/notes/{id}:
+    get:
+      tags:
+        - admin
+      summary: Получить заметку по ID
+      description: Возвращает заметку по ID.
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          description: ID заметки
+          required: true
+          type: string
+      responses:
+        200:
+          description: Успешный ответ
+          schema:
+            type: object
+            properties:
+              data:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    example: 3
+                  user_id:
+                    type: integer
+                    example: 2
+                  title:
+                    type: string
+                    example: "Пример заметки"
+                  content:
+                    type: string
+                    example: "Содержимое примерной заметки"
+        401:
+          description: Unauthorized
+        404:
+          description: Заметка не найдена
+    put:
+      tags:
+        - admin
+      summary: Обновить заметку
+      description: Обновляет существующую заметку по ID.
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          description: ID заметки
+          required: true
+          type: string
+        - in: body
+          name: body
+          description: Данные для обновления заметки
+          required: true
+          schema:
+            type: object
+            properties:
+              title:
+                type: string
+                example: "Обновленный заголовок заметки"
+              content:
+                type: string
+                example: "Обновленное содержимое заметки"
+      responses:
+        200:
+          description: Успешный ответ
+          schema:
+            type: object
+            properties:
+              data:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    example: 3
+                  user_id:
+                    type: integer
+                    example: 2
+                  title:
+                    type: string
+                    example: "Обновленный заголовок заметки"
+                  content:
+                    type: string
+                    example: "Обновленное содержимое заметки"
+        400:
+          description: Неверный запрос
+        401:
+          description: Unauthorized
+        404:
+          description: Заметка не найдена
+    delete:
+      tags:
+        - admin
+      summary: Удалить заметку
+      description: Удаляет заметку по ID.
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          description: ID заметки
+          required: true
+          type: string
+      responses:
+        200:
+          description: Заметка удалена
+          schema:
+            type: object
+            properties:
+              data:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    example: 3
+                  user_id:
+                    type: integer
+                    example: 2
+                  title:
+                    type: string
+                    example: "Пример заметки"
+                  content:
+                    type: string
+                    example: "Содержимое примерной заметки"
+        401:
+          description: Unauthorized
+        404:
+          description: Заметка не найдена
+  # Эндпоинты для аутентификации
+  /auth/register:
+    post:
+      tags:
+        - auth
+      summary: Регистрация нового пользователя
+      description: Регистрирует нового пользователя и возвращает токен доступа.
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: Данные для регистрации пользователя
+          required: true
+          schema:
+            type: object
+            required:
+              - email
+              - password
+            properties:
+              name:
+                type: string
+              email:
+                type: string
+                format: email
+              password:
+                type: string
+      responses:
+        201:
+          description: Пользователь успешно зарегистрирован
+          schema:
+            type: object
+            properties:
+              token:
+                type: string
+                example: "access_token_here"
+        400:
+          description: Неверные входные данные
+        500:
+          description: Внутренняя ошибка сервера
+  /auth/login:
+    post:
+      tags:
+        - auth
+      summary: Вход пользователя
+      description: Авторизует пользователя и возвращает токен доступа.
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: Учетные данные пользователя
+          required: true
+          schema:
+            type: object
+            properties:
+              email:
+                type: string
+                format: email
+              password:
+                type: string
+      responses:
+        200:
+          description: Вход выполнен успешно
+          schema:
+            type: object
+            properties:
+              token:
+                type: string
+                example: "access_token_here"
+        422:
+          description: Неверные учетные данные
+  /auth/logout:
+    post:
+      tags:
+        - auth
+      summary: Выход пользователя
+      description: Выход пользователя из системы и аннулирование токена доступа.
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Выход выполнен успешно
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: "Successfully logged out"
+        401:
+          description: Неавторизован

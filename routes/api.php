@@ -1,6 +1,8 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\Api\Admin\NoteController as AdminNoteController;
+use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\User\NoteController as UserNoteController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,6 +16,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::post('register', [AuthController::class, 'register']);
+Route::post('login', [AuthController::class, 'login']);
+Route::post('logout', [AuthController::class, 'logout'])->middleware('auth:api');
+
+Route::middleware(['auth:api', 'admin'])->prefix('admin')->group(function () {
+    Route::apiResource('notes', AdminNoteController::class);
+});
+
+Route::middleware(['auth:api'])->group(function () {
+    Route::apiResource('notes', UserNoteController::class);
 });
